@@ -8,6 +8,10 @@ enum NavType {
   final String title;
 
   void show(BuildContext context) {
-    // TODO(shohei): ページ遷移
+    switch (this) {
+      case NavType.talkToChatGpt:
+        // TODO(shohei): ページ遷移
+        break;
+    }
   }
 }

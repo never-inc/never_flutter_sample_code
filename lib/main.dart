@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
-  static List<NavType> get _sampleCodeList => [
+  static List<NavType> get _navList => [
         NavType.talkToChatGpt,
       ];
 
@@ -34,17 +34,17 @@ class MainPage extends StatelessWidget {
         title: const Text('Never Flutter Sample Code'),
       ),
       body: ListView.separated(
-        itemCount: _sampleCodeList.length,
+        itemCount: _navList.length,
         itemBuilder: (context, index) {
-          final sample = _sampleCodeList[index];
+          final nav = _navList[index];
           return InkWell(
             onTap: () {
-              sample.show(context);
+              nav.show(context);
             },
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(16),
               child: Text(
-                sample.title,
+                nav.title,
                 style: const TextStyle(
                   fontSize: 15,
                 ),
