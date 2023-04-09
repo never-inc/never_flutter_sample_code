@@ -280,9 +280,12 @@ Usage _$UsageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Usage {
-  int get prompt_tokens => throw _privateConstructorUsedError;
-  int get completion_tokens => throw _privateConstructorUsedError;
-  int get total_tokens => throw _privateConstructorUsedError;
+  @JsonKey(name: 'prompt_tokens')
+  int get promptTokens => throw _privateConstructorUsedError;
+  @JsonKey(name: 'completion_tokens')
+  int get completionTokens => throw _privateConstructorUsedError;
+  @JsonKey(name: 'total_tokens')
+  int get totalTokens => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -294,7 +297,10 @@ abstract class $UsageCopyWith<$Res> {
   factory $UsageCopyWith(Usage value, $Res Function(Usage) then) =
       _$UsageCopyWithImpl<$Res, Usage>;
   @useResult
-  $Res call({int prompt_tokens, int completion_tokens, int total_tokens});
+  $Res call(
+      {@JsonKey(name: 'prompt_tokens') int promptTokens,
+      @JsonKey(name: 'completion_tokens') int completionTokens,
+      @JsonKey(name: 'total_tokens') int totalTokens});
 }
 
 /// @nodoc
@@ -310,22 +316,22 @@ class _$UsageCopyWithImpl<$Res, $Val extends Usage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? prompt_tokens = null,
-    Object? completion_tokens = null,
-    Object? total_tokens = null,
+    Object? promptTokens = null,
+    Object? completionTokens = null,
+    Object? totalTokens = null,
   }) {
     return _then(_value.copyWith(
-      prompt_tokens: null == prompt_tokens
-          ? _value.prompt_tokens
-          : prompt_tokens // ignore: cast_nullable_to_non_nullable
+      promptTokens: null == promptTokens
+          ? _value.promptTokens
+          : promptTokens // ignore: cast_nullable_to_non_nullable
               as int,
-      completion_tokens: null == completion_tokens
-          ? _value.completion_tokens
-          : completion_tokens // ignore: cast_nullable_to_non_nullable
+      completionTokens: null == completionTokens
+          ? _value.completionTokens
+          : completionTokens // ignore: cast_nullable_to_non_nullable
               as int,
-      total_tokens: null == total_tokens
-          ? _value.total_tokens
-          : total_tokens // ignore: cast_nullable_to_non_nullable
+      totalTokens: null == totalTokens
+          ? _value.totalTokens
+          : totalTokens // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -337,7 +343,10 @@ abstract class _$$_UsageCopyWith<$Res> implements $UsageCopyWith<$Res> {
       __$$_UsageCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int prompt_tokens, int completion_tokens, int total_tokens});
+  $Res call(
+      {@JsonKey(name: 'prompt_tokens') int promptTokens,
+      @JsonKey(name: 'completion_tokens') int completionTokens,
+      @JsonKey(name: 'total_tokens') int totalTokens});
 }
 
 /// @nodoc
@@ -349,22 +358,22 @@ class __$$_UsageCopyWithImpl<$Res> extends _$UsageCopyWithImpl<$Res, _$_Usage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? prompt_tokens = null,
-    Object? completion_tokens = null,
-    Object? total_tokens = null,
+    Object? promptTokens = null,
+    Object? completionTokens = null,
+    Object? totalTokens = null,
   }) {
     return _then(_$_Usage(
-      prompt_tokens: null == prompt_tokens
-          ? _value.prompt_tokens
-          : prompt_tokens // ignore: cast_nullable_to_non_nullable
+      promptTokens: null == promptTokens
+          ? _value.promptTokens
+          : promptTokens // ignore: cast_nullable_to_non_nullable
               as int,
-      completion_tokens: null == completion_tokens
-          ? _value.completion_tokens
-          : completion_tokens // ignore: cast_nullable_to_non_nullable
+      completionTokens: null == completionTokens
+          ? _value.completionTokens
+          : completionTokens // ignore: cast_nullable_to_non_nullable
               as int,
-      total_tokens: null == total_tokens
-          ? _value.total_tokens
-          : total_tokens // ignore: cast_nullable_to_non_nullable
+      totalTokens: null == totalTokens
+          ? _value.totalTokens
+          : totalTokens // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -374,23 +383,26 @@ class __$$_UsageCopyWithImpl<$Res> extends _$UsageCopyWithImpl<$Res, _$_Usage>
 @JsonSerializable()
 class _$_Usage implements _Usage {
   const _$_Usage(
-      {required this.prompt_tokens,
-      required this.completion_tokens,
-      required this.total_tokens});
+      {@JsonKey(name: 'prompt_tokens') required this.promptTokens,
+      @JsonKey(name: 'completion_tokens') required this.completionTokens,
+      @JsonKey(name: 'total_tokens') required this.totalTokens});
 
   factory _$_Usage.fromJson(Map<String, dynamic> json) =>
       _$$_UsageFromJson(json);
 
   @override
-  final int prompt_tokens;
+  @JsonKey(name: 'prompt_tokens')
+  final int promptTokens;
   @override
-  final int completion_tokens;
+  @JsonKey(name: 'completion_tokens')
+  final int completionTokens;
   @override
-  final int total_tokens;
+  @JsonKey(name: 'total_tokens')
+  final int totalTokens;
 
   @override
   String toString() {
-    return 'Usage(prompt_tokens: $prompt_tokens, completion_tokens: $completion_tokens, total_tokens: $total_tokens)';
+    return 'Usage(promptTokens: $promptTokens, completionTokens: $completionTokens, totalTokens: $totalTokens)';
   }
 
   @override
@@ -398,18 +410,18 @@ class _$_Usage implements _Usage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Usage &&
-            (identical(other.prompt_tokens, prompt_tokens) ||
-                other.prompt_tokens == prompt_tokens) &&
-            (identical(other.completion_tokens, completion_tokens) ||
-                other.completion_tokens == completion_tokens) &&
-            (identical(other.total_tokens, total_tokens) ||
-                other.total_tokens == total_tokens));
+            (identical(other.promptTokens, promptTokens) ||
+                other.promptTokens == promptTokens) &&
+            (identical(other.completionTokens, completionTokens) ||
+                other.completionTokens == completionTokens) &&
+            (identical(other.totalTokens, totalTokens) ||
+                other.totalTokens == totalTokens));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, prompt_tokens, completion_tokens, total_tokens);
+      Object.hash(runtimeType, promptTokens, completionTokens, totalTokens);
 
   @JsonKey(ignore: true)
   @override
@@ -427,18 +439,24 @@ class _$_Usage implements _Usage {
 
 abstract class _Usage implements Usage {
   const factory _Usage(
-      {required final int prompt_tokens,
-      required final int completion_tokens,
-      required final int total_tokens}) = _$_Usage;
+      {@JsonKey(name: 'prompt_tokens')
+          required final int promptTokens,
+      @JsonKey(name: 'completion_tokens')
+          required final int completionTokens,
+      @JsonKey(name: 'total_tokens')
+          required final int totalTokens}) = _$_Usage;
 
   factory _Usage.fromJson(Map<String, dynamic> json) = _$_Usage.fromJson;
 
   @override
-  int get prompt_tokens;
+  @JsonKey(name: 'prompt_tokens')
+  int get promptTokens;
   @override
-  int get completion_tokens;
+  @JsonKey(name: 'completion_tokens')
+  int get completionTokens;
   @override
-  int get total_tokens;
+  @JsonKey(name: 'total_tokens')
+  int get totalTokens;
   @override
   @JsonKey(ignore: true)
   _$$_UsageCopyWith<_$_Usage> get copyWith =>
@@ -451,10 +469,7 @@ Choice _$ChoiceFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Choice {
-  String get text => throw _privateConstructorUsedError;
-  int get index => throw _privateConstructorUsedError;
-  dynamic get logprobs => throw _privateConstructorUsedError;
-  String get finish_reason => throw _privateConstructorUsedError;
+  Message get message => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -466,7 +481,9 @@ abstract class $ChoiceCopyWith<$Res> {
   factory $ChoiceCopyWith(Choice value, $Res Function(Choice) then) =
       _$ChoiceCopyWithImpl<$Res, Choice>;
   @useResult
-  $Res call({String text, int index, dynamic logprobs, String finish_reason});
+  $Res call({Message message});
+
+  $MessageCopyWith<$Res> get message;
 }
 
 /// @nodoc
@@ -482,29 +499,22 @@ class _$ChoiceCopyWithImpl<$Res, $Val extends Choice>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? text = null,
-    Object? index = null,
-    Object? logprobs = freezed,
-    Object? finish_reason = null,
+    Object? message = null,
   }) {
     return _then(_value.copyWith(
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-      logprobs: freezed == logprobs
-          ? _value.logprobs
-          : logprobs // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      finish_reason: null == finish_reason
-          ? _value.finish_reason
-          : finish_reason // ignore: cast_nullable_to_non_nullable
-              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as Message,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MessageCopyWith<$Res> get message {
+    return $MessageCopyWith<$Res>(_value.message, (value) {
+      return _then(_value.copyWith(message: value) as $Val);
+    });
   }
 }
 
@@ -514,7 +524,10 @@ abstract class _$$_ChoiceCopyWith<$Res> implements $ChoiceCopyWith<$Res> {
       __$$_ChoiceCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String text, int index, dynamic logprobs, String finish_reason});
+  $Res call({Message message});
+
+  @override
+  $MessageCopyWith<$Res> get message;
 }
 
 /// @nodoc
@@ -527,28 +540,13 @@ class __$$_ChoiceCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? text = null,
-    Object? index = null,
-    Object? logprobs = freezed,
-    Object? finish_reason = null,
+    Object? message = null,
   }) {
     return _then(_$_Choice(
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-      logprobs: freezed == logprobs
-          ? _value.logprobs
-          : logprobs // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      finish_reason: null == finish_reason
-          ? _value.finish_reason
-          : finish_reason // ignore: cast_nullable_to_non_nullable
-              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as Message,
     ));
   }
 }
@@ -556,27 +554,17 @@ class __$$_ChoiceCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Choice implements _Choice {
-  const _$_Choice(
-      {required this.text,
-      required this.index,
-      this.logprobs,
-      required this.finish_reason});
+  const _$_Choice({required this.message});
 
   factory _$_Choice.fromJson(Map<String, dynamic> json) =>
       _$$_ChoiceFromJson(json);
 
   @override
-  final String text;
-  @override
-  final int index;
-  @override
-  final dynamic logprobs;
-  @override
-  final String finish_reason;
+  final Message message;
 
   @override
   String toString() {
-    return 'Choice(text: $text, index: $index, logprobs: $logprobs, finish_reason: $finish_reason)';
+    return 'Choice(message: $message)';
   }
 
   @override
@@ -584,17 +572,12 @@ class _$_Choice implements _Choice {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Choice &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.index, index) || other.index == index) &&
-            const DeepCollectionEquality().equals(other.logprobs, logprobs) &&
-            (identical(other.finish_reason, finish_reason) ||
-                other.finish_reason == finish_reason));
+            (identical(other.message, message) || other.message == message));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, text, index,
-      const DeepCollectionEquality().hash(logprobs), finish_reason);
+  int get hashCode => Object.hash(runtimeType, message);
 
   @JsonKey(ignore: true)
   @override
@@ -611,24 +594,162 @@ class _$_Choice implements _Choice {
 }
 
 abstract class _Choice implements Choice {
-  const factory _Choice(
-      {required final String text,
-      required final int index,
-      final dynamic logprobs,
-      required final String finish_reason}) = _$_Choice;
+  const factory _Choice({required final Message message}) = _$_Choice;
 
   factory _Choice.fromJson(Map<String, dynamic> json) = _$_Choice.fromJson;
 
   @override
-  String get text;
-  @override
-  int get index;
-  @override
-  dynamic get logprobs;
-  @override
-  String get finish_reason;
+  Message get message;
   @override
   @JsonKey(ignore: true)
   _$$_ChoiceCopyWith<_$_Choice> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Message _$MessageFromJson(Map<String, dynamic> json) {
+  return _Message.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Message {
+  String get role => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $MessageCopyWith<Message> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MessageCopyWith<$Res> {
+  factory $MessageCopyWith(Message value, $Res Function(Message) then) =
+      _$MessageCopyWithImpl<$Res, Message>;
+  @useResult
+  $Res call({String role, String content});
+}
+
+/// @nodoc
+class _$MessageCopyWithImpl<$Res, $Val extends Message>
+    implements $MessageCopyWith<$Res> {
+  _$MessageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? role = null,
+    Object? content = null,
+  }) {
+    return _then(_value.copyWith(
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
+  factory _$$_MessageCopyWith(
+          _$_Message value, $Res Function(_$_Message) then) =
+      __$$_MessageCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String role, String content});
+}
+
+/// @nodoc
+class __$$_MessageCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$_Message>
+    implements _$$_MessageCopyWith<$Res> {
+  __$$_MessageCopyWithImpl(_$_Message _value, $Res Function(_$_Message) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? role = null,
+    Object? content = null,
+  }) {
+    return _then(_$_Message(
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Message implements _Message {
+  const _$_Message({required this.role, required this.content});
+
+  factory _$_Message.fromJson(Map<String, dynamic> json) =>
+      _$$_MessageFromJson(json);
+
+  @override
+  final String role;
+  @override
+  final String content;
+
+  @override
+  String toString() {
+    return 'Message(role: $role, content: $content)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Message &&
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.content, content) || other.content == content));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, role, content);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_MessageCopyWith<_$_Message> get copyWith =>
+      __$$_MessageCopyWithImpl<_$_Message>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MessageToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Message implements Message {
+  const factory _Message(
+      {required final String role, required final String content}) = _$_Message;
+
+  factory _Message.fromJson(Map<String, dynamic> json) = _$_Message.fromJson;
+
+  @override
+  String get role;
+  @override
+  String get content;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MessageCopyWith<_$_Message> get copyWith =>
       throw _privateConstructorUsedError;
 }

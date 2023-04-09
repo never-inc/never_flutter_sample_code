@@ -29,27 +29,32 @@ Map<String, dynamic> _$$_ChatGPTResponseToJson(_$_ChatGPTResponse instance) =>
     };
 
 _$_Usage _$$_UsageFromJson(Map<String, dynamic> json) => _$_Usage(
-      prompt_tokens: json['prompt_tokens'] as int,
-      completion_tokens: json['completion_tokens'] as int,
-      total_tokens: json['total_tokens'] as int,
+      promptTokens: json['prompt_tokens'] as int,
+      completionTokens: json['completion_tokens'] as int,
+      totalTokens: json['total_tokens'] as int,
     );
 
 Map<String, dynamic> _$$_UsageToJson(_$_Usage instance) => <String, dynamic>{
-      'prompt_tokens': instance.prompt_tokens,
-      'completion_tokens': instance.completion_tokens,
-      'total_tokens': instance.total_tokens,
+      'prompt_tokens': instance.promptTokens,
+      'completion_tokens': instance.completionTokens,
+      'total_tokens': instance.totalTokens,
     };
 
 _$_Choice _$$_ChoiceFromJson(Map<String, dynamic> json) => _$_Choice(
-      text: json['text'] as String,
-      index: json['index'] as int,
-      logprobs: json['logprobs'],
-      finish_reason: json['finish_reason'] as String,
+      message: Message.fromJson(json['message'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_ChoiceToJson(_$_Choice instance) => <String, dynamic>{
-      'text': instance.text,
-      'index': instance.index,
-      'logprobs': instance.logprobs,
-      'finish_reason': instance.finish_reason,
+      'message': instance.message,
+    };
+
+_$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
+      role: json['role'] as String,
+      content: json['content'] as String,
+    );
+
+Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
+    <String, dynamic>{
+      'role': instance.role,
+      'content': instance.content,
     };

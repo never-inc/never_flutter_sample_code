@@ -12,6 +12,6 @@ void main() {
     final response = await chatGPT(prompt);
 
     expect(response, isA<ChatGPTResponse>());
-    expect(response.choices[0].text.isNotEmpty, true);
+    expect(response.choices[0].message.content.isNotEmpty, true);
   });
 }

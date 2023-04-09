@@ -21,9 +21,9 @@ class ChatGPTResponse with _$ChatGPTResponse {
 @freezed
 class Usage with _$Usage {
   const factory Usage({
-    required int prompt_tokens,
-    required int completion_tokens,
-    required int total_tokens,
+    @JsonKey(name: 'prompt_tokens') required int promptTokens,
+    @JsonKey(name: 'completion_tokens') required int completionTokens,
+    @JsonKey(name: 'total_tokens') required int totalTokens,
   }) = _Usage;
 
   factory Usage.fromJson(Map<String, dynamic> json) => _$UsageFromJson(json);
@@ -32,11 +32,19 @@ class Usage with _$Usage {
 @freezed
 class Choice with _$Choice {
   const factory Choice({
-    required String text,
-    required int index,
-    dynamic logprobs,
-    required String finish_reason,
+    required Message message,
   }) = _Choice;
 
   factory Choice.fromJson(Map<String, dynamic> json) => _$ChoiceFromJson(json);
+}
+
+@freezed
+class Message with _$Message {
+  const factory Message({
+    required String role,
+    required String content,
+  }) = _Message;
+
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
 }

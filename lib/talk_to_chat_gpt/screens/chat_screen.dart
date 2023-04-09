@@ -32,12 +32,12 @@ class ChatScreenState extends State<ChatScreen> {
     // ChatGPT関数を使用して応答を取得する
     try {
       final response = await chatGPT(text);
-      final chatGptResponse = response.choices[0].text.trim();
-      print(chatGptResponse);
+      print(response);
+      final chatGptResponse = response.choices[0].message.content.trim();
       setState(() {
         _messages.add('ChatGPT: $chatGptResponse');
       });
-      _scrollToBottom(); // 追加
+      await Future.delayed(const Duration(milliseconds: 300), _scrollToBottom);
     } on Exception catch (e) {
       print('Error: $e');
       await showDialog<void>(
@@ -95,7 +95,7 @@ class ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: isUserMessage ? Colors.blue : Colors.grey,
+                color: isUserMessage ? Colors.blue : Colors.grey[300],
               ),
               child: Text(
                 message,
