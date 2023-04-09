@@ -13,6 +13,7 @@ class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
 
   final List<String> _messages = [];
+  bool _isLoading = false;
 
   void _scrollToBottom() {
     _scrollController.animateTo(
@@ -23,9 +24,15 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _handleSubmitted(String text) async {
+    if (_isLoading || _textController.text.isEmpty) {
+      return;
+    }
+
     FocusScope.of(context).unfocus(); // メッセージ送信後にキーボードを閉じる
     _textController.clear();
+
     setState(() {
+      _isLoading = true;
       _messages.add('User: $text');
     });
 
@@ -36,10 +43,14 @@ class ChatScreenState extends State<ChatScreen> {
       final chatGptResponse = response.choices[0].message.content.trim();
       setState(() {
         _messages.add('ChatGPT: $chatGptResponse');
+        _isLoading = false;
       });
       await Future.delayed(const Duration(milliseconds: 300), _scrollToBottom);
     } on Exception catch (e) {
       print('Error: $e');
+      setState(() {
+        _isLoading = false;
+      });
       await showDialog<void>(
         context: context,
         builder: (BuildContext context) {
@@ -61,8 +72,8 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildTextComposer() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: <Widget>[
           Flexible(
@@ -140,6 +151,14 @@ class ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(color: Theme.of(context).cardColor),
                 child: _buildTextComposer(),
               ),
+              _isLoading
+                  ? const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
