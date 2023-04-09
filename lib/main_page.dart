@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:never_flutter_sample_code/talk_to_chat_gpt/screens/chat_screen.dart';
 
 enum NavType {
   talkToChatGpt('ChatGPTとチャット'),
@@ -10,7 +12,11 @@ enum NavType {
   void show(BuildContext context) {
     switch (this) {
       case NavType.talkToChatGpt:
-        // TODO(shohei): ページ遷移
+        Navigator.of(context, rootNavigator: true).push<void>(
+          CupertinoPageRoute(
+            builder: (_) => const ChatScreen(),
+          ),
+        );
         break;
     }
   }
