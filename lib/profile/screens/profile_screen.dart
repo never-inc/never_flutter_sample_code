@@ -51,6 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       body: DefaultTabController(
         length: TabItem.values.length,
         child: ExtendedNestedScrollView(
+          // スクロール位置のすべてをまとめてスクロールするのを避ける
           onlyOneScrollInBody: true,
           // タブを上で固定するためにヘッダーの合計の高さを指定
           pinnedHeaderSliverHeightBuilder: () {
@@ -60,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             return <Widget>[
               SliverAppBar(
                 pinned: true, // スクロースした時に上にAppBarが表示されたままになる
+                elevation: 0,
                 title: Text(
                   'プロフィール',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -146,52 +148,53 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ],
                 ),
               ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _StickyTabBarDelegate(
+                  TabBar(
+                    controller: _tabController,
+                    tabs:
+                        TabItem.values.map((e) => Tab(text: e.title)).toList(),
+                    indicatorColor: Colors.blue,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    labelColor: Colors.blue,
+                    labelPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
             ];
           },
-          body: Column(
+          body: TabBarView(
+            controller: _tabController,
             children: <Widget>[
-              TabBar(
-                controller: _tabController,
-                tabs: TabItem.values.map((e) => Tab(text: e.title)).toList(),
-                indicatorColor: Colors.blue,
-                labelColor: Colors.blue,
-                labelPadding: EdgeInsets.zero,
+              ListView.separated(
+                key: PageStorageKey<String>(TabItem.post.title),
+                itemCount: 100,
+                itemBuilder: (BuildContext context, int index) {
+                  return _PostTile(
+                    index: index,
+                    userName: '株式会社Never',
+                    userId: '@never_inc',
+                  );
+                },
+                separatorBuilder: (context, _) {
+                  return const Divider(height: 1);
+                },
               ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    ListView.separated(
-                      key: PageStorageKey<String>(TabItem.post.title),
-                      itemCount: 100,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PostTile(
-                          index: index,
-                          userName: '株式会社Never',
-                          userId: '@never_inc',
-                        );
-                      },
-                      separatorBuilder: (context, _) {
-                        return const Divider(height: 1);
-                      },
-                    ),
-                    ListView.separated(
-                      key: PageStorageKey<String>(TabItem.favorite.title),
-                      itemCount: 100,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PostTile(
-                          index: index,
-                          userName: 'HOGEHOGE',
-                          userId: '@hoge_hoge',
-                        );
-                      },
-                      separatorBuilder: (context, _) {
-                        return const Divider(height: 1);
-                      },
-                    ),
-                  ],
-                ),
-              )
+              ListView.separated(
+                key: PageStorageKey<String>(TabItem.favorite.title),
+                itemCount: 100,
+                itemBuilder: (BuildContext context, int index) {
+                  return _PostTile(
+                    index: index,
+                    userName: 'HOGEHOGE',
+                    userId: '@hoge_hoge',
+                  );
+                },
+                separatorBuilder: (context, _) {
+                  return const Divider(height: 1);
+                },
+              ),
             ],
           ),
         ),
@@ -200,9 +203,37 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 }
 
-class PostTile extends StatelessWidget {
-  const PostTile({
-    super.key,
+class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
+  const _StickyTabBarDelegate(this.tabBar);
+
+  final TabBar tabBar;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height * 0.7;
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height * 0.7;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return ColoredBox(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_StickyTabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar;
+  }
+}
+
+class _PostTile extends StatelessWidget {
+  const _PostTile({
     required this.index,
     required this.userName,
     required this.userId,
