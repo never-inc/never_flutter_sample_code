@@ -48,221 +48,154 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: false,
-        child: DefaultTabController(
-          length: TabItem.values.length,
-          child: ExtendedNestedScrollView(
-            onlyOneScrollInBody: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  pinned: true,
-                  title: Text(
-                    'プロフィール',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
+      body: DefaultTabController(
+        length: TabItem.values.length,
+        child: ExtendedNestedScrollView(
+          onlyOneScrollInBody: true,
+          // タブを上で固定するためにヘッダーの合計の高さを指定
+          pinnedHeaderSliverHeightBuilder: () {
+            return kToolbarHeight + MediaQuery.of(context).padding.top;
+          },
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                pinned: true, // スクロースした時に上にAppBarが表示されたままになる
+                title: Text(
+                  'プロフィール',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white,
+                      ),
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const ClipOval(
-                                    child: SizedBox(
-                                      width: 64,
-                                      height: 64,
-                                      child: ColoredBox(
-                                        color: Color(0xFFd5d5d5),
-                                        child: Icon(
-                                          Icons.person,
-                                          color: Colors.white,
-                                          size: 64 * 0.8,
-                                        ),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const ClipOval(
+                                  child: SizedBox(
+                                    width: 64,
+                                    height: 64,
+                                    child: ColoredBox(
+                                      color: Color(0xFFd5d5d5),
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                        size: 64 * 0.8,
                                       ),
                                     ),
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: const StadiumBorder(),
-                                      elevation: 0,
-                                    ),
-                                    onPressed: () async {},
-                                    child: Text(
-                                      'フォローする',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: Colors.white),
-                                    ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    elevation: 0,
                                   ),
-                                ],
-                              ),
+                                  onPressed: () async {},
+                                  child: Text(
+                                    'フォローする',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(color: Colors.white),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(
-                                '株式会社Never',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              '株式会社Never',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              '@never_inc',
-                              style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          Text(
+                            '@never_inc',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(
+                              '株式会社Neverとはモバイルアプリケーションをメインに開発、運用をおこなっております。',
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Text(
-                                '株式会社Neverとはモバイルアプリケーションをメインに開発、運用をおこなっております。',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _StickyTabBarDelegate(
-                    TabBar(
-                      controller: _tabController,
-                      tabs: TabItem.values
-                          .map((e) => Tab(text: e.title))
-                          .toList(),
-                      indicatorColor: Colors.blue,
-                      labelColor: Colors.blue,
-                      labelPadding: EdgeInsets.zero,
                     ),
-                  ),
+                  ],
                 ),
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController,
-              children: const [
-                PostPage(),
-                FavoritePage(),
-              ],
-            ),
+              ),
+            ];
+          },
+          body: Column(
+            children: <Widget>[
+              TabBar(
+                controller: _tabController,
+                tabs: TabItem.values.map((e) => Tab(text: e.title)).toList(),
+                indicatorColor: Colors.blue,
+                labelColor: Colors.blue,
+                labelPadding: EdgeInsets.zero,
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    ListView.separated(
+                      key: PageStorageKey<String>(TabItem.post.title),
+                      itemCount: 100,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PostTile(
+                          index: index,
+                          userName: '株式会社Never',
+                          userId: '@never_inc',
+                        );
+                      },
+                      separatorBuilder: (context, _) {
+                        return const Divider(height: 1);
+                      },
+                    ),
+                    ListView.separated(
+                      key: PageStorageKey<String>(TabItem.favorite.title),
+                      itemCount: 100,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PostTile(
+                          index: index,
+                          userName: 'HOGEHOGE',
+                          userId: '@hoge_hoge',
+                        );
+                      },
+                      separatorBuilder: (context, _) {
+                        return const Divider(height: 1);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
-  const _StickyTabBarDelegate(this.tabBar);
-
-  final TabBar tabBar;
-
-  @override
-  double get minExtent => tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return ColoredBox(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(_StickyTabBarDelegate oldDelegate) {
-    return tabBar != oldDelegate.tabBar;
-  }
-}
-
-class PostPage extends StatefulWidget {
-  const PostPage({
-    super.key,
-  });
-
-  @override
-  PostPageState createState() => PostPageState();
-}
-
-class PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return ListView.separated(
-      itemCount: 100,
-      itemBuilder: (BuildContext context, int index) {
-        return PostTile(
-          index: index,
-          userName: '株式会社Never',
-          userId: '@never_inc',
-        );
-      },
-      separatorBuilder: (context, _) {
-        return const Divider(height: 1);
-      },
-    );
-  }
-}
-
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({
-    super.key,
-  });
-
-  @override
-  FavoritePageState createState() => FavoritePageState();
-}
-
-class FavoritePageState extends State<FavoritePage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return ListView.separated(
-      itemCount: 100,
-      itemBuilder: (BuildContext context, int index) {
-        return PostTile(
-          index: index,
-          userName: 'HOGEHOGE',
-          userId: '@hoge_hoge',
-        );
-      },
-      separatorBuilder: (context, _) {
-        return const Divider(height: 1);
-      },
     );
   }
 }
