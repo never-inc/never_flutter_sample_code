@@ -17,6 +17,7 @@ enum NavType {
         Navigator.of(context, rootNavigator: true).push<void>(
           CupertinoPageRoute(
             builder: (_) => const ChatScreen(),
+            settings: RouteSettings(name: name),
           ),
         );
         break;
@@ -24,6 +25,7 @@ enum NavType {
         Navigator.of(context, rootNavigator: true).push<void>(
           CupertinoPageRoute(
             builder: (_) => const ProfileScreen(),
+            settings: RouteSettings(name: name),
           ),
         );
         break;

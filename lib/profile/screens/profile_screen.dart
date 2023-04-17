@@ -35,11 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
@@ -60,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                pinned: true, // スクロースした時に上にAppBarが表示されたままになる
+                pinned: true, // スクロールした時に上にAppBarが表示されたままになる
                 elevation: 0,
                 title: Text(
                   'プロフィール',
@@ -69,83 +64,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                 ),
               ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const ClipOval(
-                                  child: SizedBox(
-                                    width: 64,
-                                    height: 64,
-                                    child: ColoredBox(
-                                      color: Color(0xFFd5d5d5),
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.white,
-                                        size: 64 * 0.8,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: const StadiumBorder(),
-                                    elevation: 0,
-                                  ),
-                                  onPressed: () async {},
-                                  child: Text(
-                                    'フォローする',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              '株式会社Never',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Text(
-                            '@never_inc',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Text(
-                              '株式会社Neverとはモバイルアプリケーションをメインに開発、運用をおこなっております。',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              const SliverToBoxAdapter(
+                child: _ProfileTile(
+                  userName: '株式会社Never',
+                  userId: '@never_inc',
+                  selfIntroduction:
+                      '株式会社Neverとはモバイルアプリケーションをメインに開発、運用をおこなっております。',
                 ),
               ),
               SliverPersistentHeader(
@@ -229,6 +153,92 @@ class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(_StickyTabBarDelegate oldDelegate) {
     return tabBar != oldDelegate.tabBar;
+  }
+}
+
+class _ProfileTile extends StatelessWidget {
+  const _ProfileTile({
+    required this.userName,
+    required this.userId,
+    required this.selfIntroduction,
+  });
+  final String userName;
+  final String userId;
+  final String selfIntroduction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24,
+        vertical: 16,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const ClipOval(
+                  child: SizedBox(
+                    width: 64,
+                    height: 64,
+                    child: ColoredBox(
+                      color: Color(0xFFd5d5d5),
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 64 * 0.8,
+                      ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    elevation: 0,
+                  ),
+                  onPressed: () async {},
+                  child: Text(
+                    'フォローする',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              userName,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text(
+            userId,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              selfIntroduction,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
