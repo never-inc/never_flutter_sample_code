@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:never_flutter_sample_code/profile/screens/profile_screen.dart';
 import 'package:never_flutter_sample_code/talk_to_chat_gpt/screens/chat_screen.dart';
 
 enum NavType {
   talkToChatGpt('ChatGPTとチャット'),
+  profile('プロフィール'),
   ;
 
   const NavType(this.title);
@@ -15,6 +17,15 @@ enum NavType {
         Navigator.of(context, rootNavigator: true).push<void>(
           CupertinoPageRoute(
             builder: (_) => const ChatScreen(),
+            settings: RouteSettings(name: name),
+          ),
+        );
+        break;
+      case NavType.profile:
+        Navigator.of(context, rootNavigator: true).push<void>(
+          CupertinoPageRoute(
+            builder: (_) => const ProfileScreen(),
+            settings: RouteSettings(name: name),
           ),
         );
         break;
@@ -27,6 +38,7 @@ class MainPage extends StatelessWidget {
 
   static List<NavType> get _navList => [
         NavType.talkToChatGpt,
+        NavType.profile,
       ];
 
   @override
