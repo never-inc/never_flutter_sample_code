@@ -9,5 +9,7 @@ A new Flutter project.
 ```sh
 git clone https://github.com/never-inc/never_flutter_sample_code.git
 cd never_flutter_sample_code
-touch .env
+cp .env.template .env
+flutter pub get
+flutter run
 ```
