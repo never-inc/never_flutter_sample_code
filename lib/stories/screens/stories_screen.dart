@@ -28,15 +28,17 @@ class _StoriesScreenState extends State<StoriesScreen>
     _pageController = PageController();
     _focusNode.addListener(() {
       setState(() {
-        _focusNode.hasFocus;
+        // キーボードが表示されている場合の挙動の制御
+        // キーボードが表示された場合はアニメーションや動画の再生を停止する
         if (_focusNode.hasFocus) {
           _animationController.stop();
           if (_videoController != null && _videoController!.value.isPlaying) {
             _videoController!.pause();
           }
         } else {
+          // キーボードが閉じられた場合はアニメーションや動画の再生を再開する
           _animationController.forward();
-          if (_videoController != null && _videoController!.value.isPlaying) {
+          if (_videoController != null && !_videoController!.value.isPlaying) {
             _videoController!.play();
           }
         }
@@ -91,9 +93,8 @@ class _StoriesScreenState extends State<StoriesScreen>
         body: Stack(
           children: <Widget>[
             GestureDetector(
+              // 画面タップ時の処理
               onTapUp: (details) {
-                print(_focusNode.hasFocus);
-
                 // キーボードが表示されている場合はキーボードのフォーカスを外すのみ
                 if (_focusNode.hasFocus) {
                   FocusScope.of(context).unfocus();
@@ -101,32 +102,38 @@ class _StoriesScreenState extends State<StoriesScreen>
                   _onTapUp(details, story);
                 }
               },
-              onLongPressEnd: (details) {
-                if (_focusNode.hasFocus) {
-                  return;
-                }
-                setState(() {
-                  isLongPress = false;
-                });
-                _animationController.forward();
-                if (_videoController != null &&
-                    _videoController!.value.isPlaying) {
-                  _videoController!.play();
-                }
-              },
+
+              // 長押し時の場合にはアニメーションや動画の再生を停止する
               onLongPressStart: (details) {
+                // キーボードが表示されている場合は処理を行わない
                 if (_focusNode.hasFocus) {
                   return;
                 }
 
                 setState(() {
                   isLongPress = true;
+                  _animationController.stop();
+                  if (_videoController != null &&
+                      _videoController!.value.isPlaying) {
+                    _videoController!.pause();
+                  }
                 });
-                _animationController.stop();
-                if (_videoController != null &&
-                    _videoController!.value.isPlaying) {
-                  _videoController!.pause();
+              },
+
+              // 長押し終了の場合にはアニメーションや動画の再生を再開する
+              onLongPressEnd: (details) {
+                // キーボードが表示されている場合は処理を行わない
+                if (_focusNode.hasFocus) {
+                  return;
                 }
+                setState(() {
+                  isLongPress = false;
+                  _animationController.forward();
+                  if (_videoController != null &&
+                      !_videoController!.value.isPlaying) {
+                    _videoController!.play();
+                  }
+                });
               },
               child: PageView.builder(
                 controller: _pageController,
@@ -144,6 +151,8 @@ class _StoriesScreenState extends State<StoriesScreen>
                 },
               ),
             ),
+
+            // ヘッダー部分(時間のバーとサムネ、ユーザ名)
             AnimatedOpacity(
               opacity: isLongPress ? 0.0 : 1.0,
               duration: const Duration(milliseconds: 500),
@@ -158,6 +167,7 @@ class _StoriesScreenState extends State<StoriesScreen>
     );
   }
 
+  // タップ時に前後の画像を表示するための処理
   void _onTapUp(TapUpDetails details, Story story) {
     final screenWidth = MediaQuery.of(context).size.width;
     final dx = details.globalPosition.dx;
@@ -302,7 +312,7 @@ class StoriesHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       child: Column(
         children: [
           Row(
@@ -408,8 +418,6 @@ class _MessageAreaState extends State<MessageArea> {
                       ),
                       child: TextField(
                         focusNode: widget.focusNode,
-                        // onTapOutside: (value) =>
-                        //     FocusScope.of(context).unfocus(),
                         controller: widget.textController,
                         maxLines: 4,
                         minLines: 1,
