@@ -584,12 +584,10 @@ class Story {
   const Story({
     required this.url,
     required this.media,
-    // required this.duration,
   });
 
   final String url;
   final MediaType media;
-// final Duration duration;
 }
 
 final List<Story> stories = [
@@ -597,30 +595,25 @@ final List<Story> stories = [
     url:
         'https://images.pexels.com/photos/1450082/pexels-photo-1450082.jpeg?auto=compress&cs=tinysrgb&w=1600',
     media: MediaType.image,
-    // duration: Duration(seconds: 10),
   ),
   const Story(
     url:
         'https://images.pexels.com/photos/1624438/pexels-photo-1624438.jpeg?auto=compress&cs=tinysrgb&w=1600',
     media: MediaType.image,
-    // duration: Duration(seconds: 7),
   ),
   const Story(
     url:
         'https://joy1.videvo.net/videvo_files/video/free/2019-11/large_watermarked/190301_1_25_11_preview.mp4',
     media: MediaType.video,
-    // duration: Duration.zero,
   ),
   const Story(
     url:
         'https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&w=1600',
     media: MediaType.image,
-    // duration: Duration(seconds: 5),
   ),
   // const Story(
   //   url:
   //       'https://player.vimeo.com/external/336859936.sd.mp4?s=54fa7a2fc222f135b2b348bf4e792372736e52b2&profile_id=164&oauth2_token_id=57447761',
   //   media: MediaType.video,
-  //   // duration: Duration.zero,
   // ),
 ];
