@@ -1,10 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+class StoryScreen extends StatefulWidget {
+  const StoryScreen({super.key});
+
+  @override
+  State<StoryScreen> createState() => _StoryScreenState();
+}
+
+class _StoryScreenState extends State<StoryScreen> {
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: _pageController,
+      itemCount: stories.length,
+      itemBuilder: (context, i) {
+        final story = stories[i];
+        return StoriesScreen(
+          pagesControl: _pageController,
+          story: story,
+          isLastStory: i + 1 == stories.length,
+        );
+      },
+    );
+  }
+}
+
 class StoriesScreen extends StatefulWidget {
   const StoriesScreen({
     super.key,
+    required this.pagesControl,
+    required this.story,
+    required this.isLastStory,
   });
+
+  final PageController pagesControl;
+  final Story story;
+
+  // 最後のストーリーかどうかのフラグ
+  final bool isLastStory;
 
   @override
   State<StoriesScreen> createState() => _StoriesScreenState();
@@ -50,16 +98,16 @@ class _StoriesScreenState extends State<StoriesScreen>
       });
     });
     _animationController = AnimationController(vsync: this);
-    if (stories.first.media == MediaType.video) {
+    if (widget.story.contents.first.media == MediaType.video) {
       _videoController = VideoPlayerController.network(
-        stories.first.url,
+        widget.story.contents.first.url,
       )..initialize().then((_) {
           setState(() {});
         });
     }
 
-    final firstStory = stories.first;
-    _loadStory(story: firstStory, animateToPage: false);
+    final firstStory = widget.story.contents.first;
+    _loadStory(content: firstStory, animateToPage: false);
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -68,12 +116,17 @@ class _StoriesScreenState extends State<StoriesScreen>
           ..reset();
         _textController.clear();
         setState(() {
-          if (_currentIndex + 1 < stories.length) {
+          if (_currentIndex + 1 < widget.story.contents.length) {
             _currentIndex += 1;
-            _loadStory(story: stories[_currentIndex]);
+            _loadStory(content: widget.story.contents[_currentIndex]);
           } else {
-            _currentIndex = 0;
-            _loadStory(story: stories[_currentIndex]);
+            // 最後のページの場合は次のストーリーに遷移する
+            widget.isLastStory
+                ? Navigator.pop(context)
+                : widget.pagesControl.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
           }
         });
       }
@@ -91,7 +144,7 @@ class _StoriesScreenState extends State<StoriesScreen>
 
   @override
   Widget build(BuildContext context) {
-    final story = stories[_currentIndex];
+    final content = widget.story.contents[_currentIndex];
     return SafeArea(
       bottom: false,
       child: Scaffold(
@@ -106,7 +159,12 @@ class _StoriesScreenState extends State<StoriesScreen>
                 if (_focusNode.hasFocus) {
                   FocusScope.of(context).unfocus();
                 } else {
-                  _onTapUp(details, story, _textController);
+                  _onTapUp(
+                    details,
+                    content,
+                    _textController,
+                    widget.isLastStory,
+                  );
                 }
               },
 
@@ -145,11 +203,11 @@ class _StoriesScreenState extends State<StoriesScreen>
               child: PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: stories.length,
+                itemCount: widget.story.contents.length,
                 itemBuilder: (context, i) {
-                  final story = stories[i];
+                  final content = widget.story.contents[i];
                   return StoryContent(
-                    story: story,
+                    content: content,
                     focusNode: _focusNode,
                     textController: _textController,
                     videoController: _videoController,
@@ -166,6 +224,7 @@ class _StoriesScreenState extends State<StoriesScreen>
               child: StoriesHeader(
                 animationController: _animationController,
                 currentIndex: _currentIndex,
+                story: widget.story,
               ),
             ),
           ],
@@ -177,8 +236,9 @@ class _StoriesScreenState extends State<StoriesScreen>
   // タップ時に前後の画像を表示するための処理
   void _onTapUp(
     TapUpDetails details,
-    Story story,
+    Content content,
     TextEditingController textController,
+    bool isLastStory,
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
     final dx = details.globalPosition.dx;
@@ -187,38 +247,52 @@ class _StoriesScreenState extends State<StoriesScreen>
     // 画面の左側の1/3をタップした場合
     if (dx < screenWidth / 3) {
       setState(() {
+        // 1枚目以外の場合
         if (_currentIndex - 1 >= 0) {
           _currentIndex -= 1;
-          _loadStory(story: stories[_currentIndex]);
+          _loadStory(content: widget.story.contents[_currentIndex]);
+        } else {
+          // 初回ページの場合は処理終了する
+          if (widget.pagesControl.page == 0) {
+            return;
+          }
+          widget.pagesControl.previousPage(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
         }
       });
     } else {
       // 画面のその他をタップした場合
       setState(() {
-        if (_currentIndex + 1 < stories.length) {
+        if (_currentIndex + 1 < widget.story.contents.length) {
           _currentIndex += 1;
-          _loadStory(story: stories[_currentIndex]);
+          _loadStory(content: widget.story.contents[_currentIndex]);
         } else {
-          _currentIndex = 0;
-          _loadStory(story: stories[_currentIndex]);
+          isLastStory
+              ? Navigator.pop(context)
+              : widget.pagesControl.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
         }
       });
     }
   }
 
-  void _loadStory({required Story story, bool animateToPage = true}) {
+  void _loadStory({required Content content, bool animateToPage = true}) {
     _animationController
       ..stop()
       ..reset();
-    switch (story.media) {
+    switch (content.media) {
       case MediaType.image:
         // １つ画像の表示する時間を設定
-        _animationController.duration = const Duration(seconds: 5);
+        _animationController.duration = const Duration(seconds: 3);
         _animationController.forward();
         break;
       case MediaType.video:
         _videoController?.dispose();
-        _videoController = VideoPlayerController.network(story.url)
+        _videoController = VideoPlayerController.network(content.url)
           ..initialize().then((_) {
             setState(() {});
             if (_videoController != null &&
@@ -244,14 +318,14 @@ class _StoriesScreenState extends State<StoriesScreen>
 class StoryContent extends StatefulWidget {
   const StoryContent({
     super.key,
-    required this.story,
+    required this.content,
     required this.focusNode,
     required this.textController,
     required this.videoController,
     required this.isLongPress,
   });
 
-  final Story story;
+  final Content content;
   final FocusNode focusNode;
   final TextEditingController textController;
   final VideoPlayerController? videoController;
@@ -271,12 +345,12 @@ class _StoryContentState extends State<StoryContent> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: () {
-              switch (widget.story.media) {
+              switch (widget.content.media) {
                 case MediaType.image:
                   return Container(
                     constraints: const BoxConstraints.expand(),
                     child: Image(
-                      image: NetworkImage(widget.story.url),
+                      image: NetworkImage(widget.content.url),
                       fit: BoxFit.fitWidth,
                     ),
                   );
@@ -298,7 +372,7 @@ class _StoryContentState extends State<StoryContent> {
           ),
         ),
         AnimatedOpacity(
-          opacity: widget.isLongPress ? 0.0 : 1.0,
+          opacity: widget.isLongPress ? 0 : 1,
           duration: const Duration(milliseconds: 500),
           child: MessageArea(
             focusNode: widget.focusNode,
@@ -316,10 +390,12 @@ class StoriesHeader extends StatelessWidget {
     super.key,
     required this.animationController,
     required this.currentIndex,
+    required this.story,
   });
 
   final AnimationController animationController;
   final int currentIndex;
+  final Story story;
 
   @override
   Widget build(BuildContext context) {
@@ -328,7 +404,7 @@ class StoriesHeader extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            children: stories
+            children: story.contents
                 .asMap()
                 .map((i, e) {
                   return MapEntry(
@@ -366,7 +442,7 @@ class StoriesHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'never_inc',
+                    story.userName,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -456,7 +532,8 @@ class _MessageAreaState extends State<MessageArea> {
                               ? hasText
                                   ? TextButton(
                                       onPressed: () {
-                                        print(widget.textController.text);
+                                        // バックエンド等にメッセージ送信する
+                                        debugPrint(widget.textController.text);
                                       },
                                       child: Text(
                                         '送信',
@@ -508,7 +585,8 @@ class _MessageAreaState extends State<MessageArea> {
                                 color: Colors.white,
                               ),
                               onPressed: () => {
-                                print(widget.textController.text),
+                                // バックエンド等にメッセージ送信する
+                                debugPrint(widget.textController.text),
                               },
                             ),
                           ],
@@ -596,8 +674,61 @@ enum MediaType {
   video,
 }
 
+final List<Story> stories = [
+  const Story(
+    userName: 'never_inc',
+    contents: [
+      Content(
+        url:
+            'https://images.pexels.com/photos/1450082/pexels-photo-1450082.jpeg?auto=compress&cs=tinysrgb&w=1600',
+        media: MediaType.image,
+      ),
+      Content(
+        url:
+            'https://images.pexels.com/photos/1624438/pexels-photo-1624438.jpeg?auto=compress&cs=tinysrgb&w=1600',
+        media: MediaType.image,
+      ),
+      Content(
+        url:
+            'https://joy1.videvo.net/videvo_files/video/free/2019-11/large_watermarked/190301_1_25_11_preview.mp4',
+        media: MediaType.video,
+      ),
+      Content(
+        url:
+            'https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&w=1600',
+        media: MediaType.image,
+      ),
+    ],
+  ),
+  const Story(
+    userName: 'hoge_inc',
+    contents: [
+      Content(
+        url:
+            'https://cdn.pixabay.com/photo/2014/02/27/16/09/sunset-275978_1280.jpg',
+        media: MediaType.image,
+      ),
+      Content(
+        url:
+            'https://cdn.pixabay.com/photo/2016/10/07/18/32/vintage-1722329_1280.jpg',
+        media: MediaType.image,
+      ),
+    ],
+  ),
+];
+
 class Story {
   const Story({
+    required this.contents,
+    required this.userName,
+  });
+
+  final List<Content> contents;
+  final String userName;
+}
+
+class Content {
+  const Content({
     required this.url,
     required this.media,
   });
@@ -605,31 +736,3 @@ class Story {
   final String url;
   final MediaType media;
 }
-
-final List<Story> stories = [
-  const Story(
-    url:
-        'https://images.pexels.com/photos/1450082/pexels-photo-1450082.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    media: MediaType.image,
-  ),
-  const Story(
-    url:
-        'https://images.pexels.com/photos/1624438/pexels-photo-1624438.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    media: MediaType.image,
-  ),
-  const Story(
-    url:
-        'https://joy1.videvo.net/videvo_files/video/free/2019-11/large_watermarked/190301_1_25_11_preview.mp4',
-    media: MediaType.video,
-  ),
-  const Story(
-    url:
-        'https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    media: MediaType.image,
-  ),
-  // const Story(
-  //   url:
-  //       'https://player.vimeo.com/external/336859936.sd.mp4?s=54fa7a2fc222f135b2b348bf4e792372736e52b2&profile_id=164&oauth2_token_id=57447761',
-  //   media: MediaType.video,
-  // ),
-];
