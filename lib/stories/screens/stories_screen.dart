@@ -13,13 +13,18 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen>
     with SingleTickerProviderStateMixin {
   late PageController _pageController;
-
   late AnimationController _animationController;
   VideoPlayerController? _videoController;
-  int _currentIndex = 0;
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
+
+  // ストーリーに表示させるコンテンツのindex
+  int _currentIndex = 0;
+
+  // テキストが入力されているかどうかのフラグ
   bool hasText = false;
+
+  // 長押し時のフラグ
   bool isLongPress = false;
 
   @override
@@ -61,6 +66,7 @@ class _StoriesScreenState extends State<StoriesScreen>
         _animationController
           ..stop()
           ..reset();
+        _textController.clear();
         setState(() {
           if (_currentIndex + 1 < stories.length) {
             _currentIndex += 1;
@@ -79,6 +85,7 @@ class _StoriesScreenState extends State<StoriesScreen>
     _pageController.dispose();
     _animationController.dispose();
     _videoController?.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -99,7 +106,7 @@ class _StoriesScreenState extends State<StoriesScreen>
                 if (_focusNode.hasFocus) {
                   FocusScope.of(context).unfocus();
                 } else {
-                  _onTapUp(details, story);
+                  _onTapUp(details, story, _textController);
                 }
               },
 
@@ -157,7 +164,7 @@ class _StoriesScreenState extends State<StoriesScreen>
               opacity: isLongPress ? 0.0 : 1.0,
               duration: const Duration(milliseconds: 500),
               child: StoriesHeader(
-                animController: _animationController,
+                animationController: _animationController,
                 currentIndex: _currentIndex,
               ),
             ),
@@ -168,9 +175,14 @@ class _StoriesScreenState extends State<StoriesScreen>
   }
 
   // タップ時に前後の画像を表示するための処理
-  void _onTapUp(TapUpDetails details, Story story) {
+  void _onTapUp(
+    TapUpDetails details,
+    Story story,
+    TextEditingController textController,
+  ) {
     final screenWidth = MediaQuery.of(context).size.width;
     final dx = details.globalPosition.dx;
+    textController.clear();
 
     // 画面の左側の1/3をタップした場合
     if (dx < screenWidth / 3) {
@@ -302,11 +314,11 @@ class _StoryContentState extends State<StoryContent> {
 class StoriesHeader extends StatelessWidget {
   const StoriesHeader({
     super.key,
-    required this.animController,
+    required this.animationController,
     required this.currentIndex,
   });
 
-  final AnimationController animController;
+  final AnimationController animationController;
   final int currentIndex;
 
   @override
@@ -322,7 +334,7 @@ class StoriesHeader extends StatelessWidget {
                   return MapEntry(
                     i,
                     _AnimatedBar(
-                      animController: animController,
+                      animController: animationController,
                       position: i,
                       currentIndex: currentIndex,
                     ),
@@ -443,7 +455,9 @@ class _MessageAreaState extends State<MessageArea> {
                           suffixIcon: widget.focusNode.hasFocus
                               ? hasText
                                   ? TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        print(widget.textController.text);
+                                      },
                                       child: Text(
                                         '送信',
                                         style: Theme.of(
@@ -493,7 +507,9 @@ class _MessageAreaState extends State<MessageArea> {
                                 Icons.send,
                                 color: Colors.white,
                               ),
-                              onPressed: () => {},
+                              onPressed: () => {
+                                print(widget.textController.text),
+                              },
                             ),
                           ],
                         ),
