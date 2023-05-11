@@ -13,6 +13,7 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen> {
   late PageController _pageController;
   final focusNode = FocusNode();
+  bool isScrollable = true;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
   Widget build(BuildContext context) {
     return PageView.builder(
       controller: _pageController,
+      physics: isScrollable ? null : const NeverScrollableScrollPhysics(),
       itemCount: stories.length,
       itemBuilder: (context, i) {
         final story = stories[i];
@@ -37,6 +39,11 @@ class _StoriesScreenState extends State<StoriesScreen> {
           pagesControl: _pageController,
           storyData: story,
           isLastStory: i + 1 == stories.length,
+          updateScrollable: (bool value) {
+            setState(() {
+              isScrollable = value;
+            });
+          },
         );
       },
     );

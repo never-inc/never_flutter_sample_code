@@ -12,10 +12,14 @@ class Story extends StatefulWidget {
     required this.pagesControl,
     required this.storyData,
     required this.isLastStory,
+    required this.updateScrollable,
   });
 
   final PageController pagesControl;
   final StoryData storyData;
+
+  // StoriesScreenでのスクロール可否を変更するための関数
+  final void Function(bool value) updateScrollable;
 
   // 最後のストーリーかどうかのフラグ
   final bool isLastStory;
@@ -34,9 +38,6 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
   // ストーリーに表示させるコンテンツのindex
   int _currentIndex = 0;
 
-  // テキストが入力されているかどうかのフラグ
-  bool hasText = false;
-
   // 長押し時のフラグ
   bool isLongPress = false;
 
@@ -54,12 +55,16 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
           if (_videoController != null && _videoController!.value.isPlaying) {
             _videoController!.pause();
           }
+          // StoriesScreenの横スクロールを無効にする
+          widget.updateScrollable(false);
         } else {
           // キーボードが閉じられた場合はアニメーションや動画の再生を再開する
           _animationController.forward();
           if (_videoController != null && !_videoController!.value.isPlaying) {
             _videoController!.play();
           }
+          // StoriesScreenの横スクロールを有効にする
+          widget.updateScrollable(true);
         }
       });
     });

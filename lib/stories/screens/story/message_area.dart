@@ -16,6 +16,7 @@ class MessageArea extends StatefulWidget {
 }
 
 class _MessageAreaState extends State<MessageArea> {
+  // テキストが入力されているかどうかのフラグ
   bool hasText = false;
 
   @override
