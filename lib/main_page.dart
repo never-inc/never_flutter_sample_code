@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:never_flutter_sample_code/profile/screens/profile_screen.dart';
-import 'package:never_flutter_sample_code/stories/screens/story_screen.dart';
+import 'package:never_flutter_sample_code/stories/screens/stories_screen.dart';
 import 'package:never_flutter_sample_code/talk_to_chat_gpt/screens/chat_screen.dart';
 
 enum NavType {
@@ -34,8 +34,7 @@ enum NavType {
       case NavType.stories:
         Navigator.of(context, rootNavigator: true).push<void>(
           CupertinoPageRoute(
-            // builder: (_) => const StoriesScreen(),
-            builder: (_) => const StoryScreen(),
+            builder: (_) => const StoriesScreen(),
             settings: RouteSettings(name: name),
           ),
         );
