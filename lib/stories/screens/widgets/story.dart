@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:never_flutter_sample_code/stories/models/content_data.dart';
 import 'package:never_flutter_sample_code/stories/models/story_data.dart';
-import 'package:never_flutter_sample_code/stories/screens/story/content.dart';
-import 'package:never_flutter_sample_code/stories/screens/story/header.dart';
+import 'package:never_flutter_sample_code/stories/screens/widgets/content.dart';
+import 'package:never_flutter_sample_code/stories/screens/widgets/header.dart';
 import 'package:video_player/video_player.dart';
 
 // ユーザー毎のストーリーを表示するWidget

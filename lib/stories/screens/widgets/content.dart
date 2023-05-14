@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:never_flutter_sample_code/stories/models/content_data.dart';
-import 'package:never_flutter_sample_code/stories/screens/story/message_area.dart';
+import 'package:never_flutter_sample_code/stories/screens/widgets/message_area.dart';
 import 'package:video_player/video_player.dart';
 
 // 画像や動画を表示するWidget

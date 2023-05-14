@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:never_flutter_sample_code/stories/models/content_data.dart';
 import 'package:never_flutter_sample_code/stories/models/story_data.dart';
-import 'package:never_flutter_sample_code/stories/screens/story/story.dart';
+import 'package:never_flutter_sample_code/stories/screens/widgets/story.dart';
 
 class StoriesScreen extends StatefulWidget {
   const StoriesScreen({super.key});
