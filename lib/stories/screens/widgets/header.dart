@@ -27,7 +27,7 @@ class Header extends StatelessWidget {
                   return MapEntry(
                     i,
                     _AnimatedBar(
-                      animController: animationController,
+                      animationController: animationController,
                       position: i,
                       currentIndex: currentIndex,
                     ),
@@ -87,12 +87,12 @@ class Header extends StatelessWidget {
 // ストーリーのヘッダーのバーの部分
 class _AnimatedBar extends StatelessWidget {
   const _AnimatedBar({
-    required this.animController,
+    required this.animationController,
     required this.position,
     required this.currentIndex,
   });
 
-  final AnimationController animController;
+  final AnimationController animationController;
   final int position;
   final int currentIndex;
 
@@ -113,10 +113,11 @@ class _AnimatedBar extends StatelessWidget {
                 ),
                 position == currentIndex
                     ? AnimatedBuilder(
-                        animation: animController,
+                        animation: animationController,
                         builder: (context, child) {
                           return _Bar(
-                            width: constraints.maxWidth * animController.value,
+                            width: constraints.maxWidth *
+                                animationController.value,
                           );
                         },
                       )
