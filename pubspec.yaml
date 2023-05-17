@@ -3,7 +3,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -17,17 +17,17 @@ dependencies:
   json_annotation: ^4.8.0
   equatable: ^2.0.5
   uuid: ^3.0.7
-  extended_nested_scroll_view: ^6.0.0
+  extended_nested_scroll_view: ^6.1.0
   video_player: ^2.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  pedantic_mono: ^1.21.1
-  json_serializable: ^6.6.1
-  build_runner: ^2.3.3
-  freezed: ^2.3.2
+  pedantic_mono: ^1.22.0
+  json_serializable: ^6.7.0
+  build_runner: ^2.4.4
+  freezed: ^2.3.4
 
 flutter:
   uses-material-design: true
