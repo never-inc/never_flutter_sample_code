@@ -84,22 +84,22 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
           ..stop()
           ..reset();
         _textController.clear();
-        setState(() {
-          if (_currentIndex + 1 < widget.storyData.contentData.length) {
+        if (_currentIndex + 1 < widget.storyData.contentData.length) {
+          setState(() {
             _currentIndex += 1;
-            _loadStory(
-              contentData: widget.storyData.contentData[_currentIndex],
-            );
-          } else {
-            // 最後のページの場合は次のストーリーに遷移する
-            widget.isLastStory
-                ? Navigator.pop(context)
-                : widget.pagesControl.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  );
-          }
-        });
+          });
+          _loadStory(
+            contentData: widget.storyData.contentData[_currentIndex],
+          );
+        } else {
+          // 最後のページの場合は次のストーリーに遷移する
+          widget.isLastStory
+              ? Navigator.pop(context)
+              : widget.pagesControl.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+        }
       }
     });
   }
@@ -219,37 +219,37 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
 
     // 画面の左側の1/3をタップした場合
     if (dx < screenWidth / 3) {
-      setState(() {
-        // 1枚目以外の場合
-        if (_currentIndex - 1 >= 0) {
+      // 1枚目以外の場合
+      if (_currentIndex - 1 >= 0) {
+        setState(() {
           _currentIndex -= 1;
-          _loadStory(contentData: widget.storyData.contentData[_currentIndex]);
-        } else {
-          // 初回ページの場合は処理終了する
-          if (widget.pagesControl.page == 0) {
-            return;
-          }
-          widget.pagesControl.previousPage(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
+        });
+        _loadStory(contentData: widget.storyData.contentData[_currentIndex]);
+      } else {
+        // 初回ページの場合は処理終了する
+        if (widget.pagesControl.page == 0) {
+          return;
         }
-      });
+        widget.pagesControl.previousPage(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
     } else {
       // 画面のその他をタップした場合
-      setState(() {
-        if (_currentIndex + 1 < widget.storyData.contentData.length) {
+      if (_currentIndex + 1 < widget.storyData.contentData.length) {
+        setState(() {
           _currentIndex += 1;
-          _loadStory(contentData: widget.storyData.contentData[_currentIndex]);
-        } else {
-          isLastStory
-              ? Navigator.pop(context)
-              : widget.pagesControl.nextPage(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-        }
-      });
+        });
+        _loadStory(contentData: widget.storyData.contentData[_currentIndex]);
+      } else {
+        isLastStory
+            ? Navigator.pop(context)
+            : widget.pagesControl.nextPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+      }
     }
   }
 
