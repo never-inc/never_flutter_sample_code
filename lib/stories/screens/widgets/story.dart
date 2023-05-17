@@ -47,26 +47,24 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
     _pageController = PageController();
     _animationController = AnimationController(vsync: this);
     _focusNode.addListener(() {
-      setState(() {
-        // キーボードが表示されている場合の挙動の制御
-        // キーボードが表示された場合はアニメーションや動画の再生を停止する
-        if (_focusNode.hasFocus) {
-          _animationController.stop();
-          if (_videoController != null && _videoController!.value.isPlaying) {
-            _videoController!.pause();
-          }
-          // StoriesScreenの横スクロールを無効にする
-          widget.updateScrollable(false);
-        } else {
-          // キーボードが閉じられた場合はアニメーションや動画の再生を再開する
-          _animationController.forward();
-          if (_videoController != null && !_videoController!.value.isPlaying) {
-            _videoController!.play();
-          }
-          // StoriesScreenの横スクロールを有効にする
-          widget.updateScrollable(true);
+      // キーボードが表示されている場合の挙動の制御
+      // キーボードが表示された場合はアニメーションや動画の再生を停止する
+      if (_focusNode.hasFocus) {
+        _animationController.stop();
+        if (_videoController != null && _videoController!.value.isPlaying) {
+          _videoController!.pause();
         }
-      });
+        // StoriesScreenの横スクロールを無効にする
+        widget.updateScrollable(false);
+      } else {
+        // キーボードが閉じられた場合はアニメーションや動画の再生を再開する
+        _animationController.forward();
+        if (_videoController != null && !_videoController!.value.isPlaying) {
+          _videoController!.play();
+        }
+        // StoriesScreenの横スクロールを有効にする
+        widget.updateScrollable(true);
+      }
     });
 
     if (widget.storyData.contentData.first.media == MediaType.video) {
@@ -147,13 +145,14 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
                   return;
                 }
 
+                _animationController.stop();
+                if (_videoController != null &&
+                    _videoController!.value.isPlaying) {
+                  _videoController!.pause();
+                }
+
                 setState(() {
                   isLongPress = true;
-                  _animationController.stop();
-                  if (_videoController != null &&
-                      _videoController!.value.isPlaying) {
-                    _videoController!.pause();
-                  }
                 });
               },
 
@@ -163,13 +162,14 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
                 if (_focusNode.hasFocus) {
                   return;
                 }
+                _animationController.forward();
+                if (_videoController != null &&
+                    !_videoController!.value.isPlaying) {
+                  _videoController!.play();
+                }
+
                 setState(() {
                   isLongPress = false;
-                  _animationController.forward();
-                  if (_videoController != null &&
-                      !_videoController!.value.isPlaying) {
-                    _videoController!.play();
-                  }
                 });
               },
               child: PageView.builder(
