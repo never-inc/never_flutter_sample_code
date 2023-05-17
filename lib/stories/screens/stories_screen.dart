@@ -39,10 +39,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
           pagesControl: _pageController,
           storyData: story,
           isLastStory: i + 1 == stories.length,
-          updateScrollable: ({value}) {
-            if (value == null) {
-              return;
-            }
+          updateScrollable: (value) {
             setState(() {
               isScrollable = value;
             });
