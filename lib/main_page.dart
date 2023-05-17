@@ -22,7 +22,6 @@ enum NavType {
             settings: RouteSettings(name: name),
           ),
         );
-        break;
       case NavType.profile:
         Navigator.of(context, rootNavigator: true).push<void>(
           CupertinoPageRoute(
@@ -30,7 +29,6 @@ enum NavType {
             settings: RouteSettings(name: name),
           ),
         );
-        break;
       case NavType.stories:
         Navigator.of(context, rootNavigator: true).push<void>(
           CupertinoPageRoute(
@@ -38,7 +36,6 @@ enum NavType {
             settings: RouteSettings(name: name),
           ),
         );
-        break;
     }
   }
 }

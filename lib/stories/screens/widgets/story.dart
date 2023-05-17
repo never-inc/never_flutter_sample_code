@@ -266,7 +266,6 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
         // １つ画像の表示する時間を設定
         _animationController.duration = const Duration(seconds: 3);
         _animationController.forward();
-        break;
       case MediaType.video:
         _videoController?.dispose();
         _videoController = VideoPlayerController.network(contentData.url)
@@ -280,7 +279,6 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
               _animationController.forward();
             }
           });
-        break;
     }
     if (animateToPage) {
       _pageController.animateToPage(
