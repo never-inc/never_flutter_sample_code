@@ -44,16 +44,17 @@ class _ContentState extends State<Content> {
                     ),
                   );
                 case MediaType.video:
-                  if (widget.videoController == null ||
-                      !widget.videoController!.value.isInitialized) {
+                  final videoController = widget.videoController;
+                  if (videoController == null ||
+                      !videoController.value.isInitialized) {
                     return const SizedBox.shrink();
                   }
                   return FittedBox(
                     fit: BoxFit.fitWidth,
                     child: SizedBox(
-                      width: widget.videoController!.value.size.width,
-                      height: widget.videoController!.value.size.height,
-                      child: VideoPlayer(widget.videoController!),
+                      width: videoController.value.size.width,
+                      height: videoController.value.size.height,
+                      child: VideoPlayer(videoController),
                     ),
                   );
               }
