@@ -1,0 +1,38 @@
+{
+    "list_data" : [
+        {
+            "user_name": "never_inc",
+            "list_images": [
+                {
+                    "url": "https://images.pexels.com/photos/1450082/pexels-photo-1450082.jpeg?auto=compress&cs=tinysrgb&w=1600",
+                    "media_type": "image"
+                },
+                {
+                    "url": "https://images.pexels.com/photos/1624438/pexels-photo-1624438.jpeg?auto=compress&cs=tinysrgb&w=1600",
+                    "media_type": "image"
+                },
+                {
+                    "url": "https://joy1.videvo.net/videvo_files/video/free/2019-11/large_watermarked/190301_1_25_11_preview.mp4",
+                    "media_type": "video"
+                },
+                {
+                    "url": "https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&w=1600",
+                    "media_type": "image"
+                }
+            ]
+        },
+        {
+            "user_name": "hoge_inc",
+            "list_images": [
+                {
+                    "url": "https://cdn.pixabay.com/photo/2014/02/27/16/09/sunset-275978_1280.jpg",
+                    "media_type": "image"
+                },
+                {
+                    "url": "https://cdn.pixabay.com/photo/2016/10/07/18/32/vintage-1722329_1280.jpg",
+                    "media_type": "image"
+                }
+            ]
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:never_flutter_sample_code/stories/models/story_data.dart';
 
-// アイコン、ユーザー名バーを表示するWidget
+/// アイコン、ユーザー名バーを表示するWidget
 class Header extends StatelessWidget {
   const Header({
     super.key,
@@ -84,7 +84,7 @@ class Header extends StatelessWidget {
   }
 }
 
-// ストーリーのヘッダーのバーの部分
+/// ストーリーのヘッダーのバーの部分
 class _AnimatedBar extends StatelessWidget {
   const _AnimatedBar({
     required this.animationController,
@@ -143,7 +143,7 @@ class _Bar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 4, // バーの高さ
+      height: 4, /// バーの高さ
       width: width,
       decoration: BoxDecoration(
         color: color,

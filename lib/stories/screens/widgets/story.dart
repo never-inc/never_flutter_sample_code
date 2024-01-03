@@ -5,7 +5,7 @@ import 'package:never_flutter_sample_code/stories/screens/widgets/content.dart';
 import 'package:never_flutter_sample_code/stories/screens/widgets/header.dart';
 import 'package:video_player/video_player.dart';
 
-// ユーザー毎のストーリーを表示するWidget
+/// ユーザー毎のストーリーを表示するWidget
 class Story extends StatefulWidget {
   const Story({
     super.key,
@@ -18,10 +18,10 @@ class Story extends StatefulWidget {
   final PageController pagesControl;
   final StoryData storyData;
 
-  // StoriesScreenでのスクロール可否を変更するための関数
+  /// StoriesScreenでのスクロール可否を変更するための関数
   final ValueChanged<bool> updateScrollable;
 
-  // 最後のストーリーかどうかのフラグ
+  /// 最後のストーリーかどうかのフラグ
   final bool isLastStory;
 
   @override
@@ -35,10 +35,10 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
-  // ストーリーに表示させるコンテンツのindex
+  /// ストーリーに表示させるコンテンツのindex
   int _currentIndex = 0;
 
-  // 長押し時のフラグ
+  /// 長押し時のフラグ
   bool isLongPress = false;
 
   @override
@@ -47,27 +47,28 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
     _pageController = PageController();
     _animationController = AnimationController(vsync: this);
     _focusNode.addListener(() {
-      // キーボードが表示されている場合の挙動の制御
-      // キーボードが表示された場合はアニメーションや動画の再生を停止する
+      /// キーボードが表示されている場合の挙動の制御
+      /// キーボードが表示された場合はアニメーションや動画の再生を停止する
       if (_focusNode.hasFocus) {
         _animationController.stop();
         if (_videoController != null && _videoController!.value.isPlaying) {
           _videoController!.pause();
         }
-        // StoriesScreenの横スクロールを無効にする
+        /// StoriesScreenの横スクロールを無効にする
         widget.updateScrollable(false);
       } else {
-        // キーボードが閉じられた場合はアニメーションや動画の再生を再開する
+        /// キーボードが閉じられた場合はアニメーションや動画の再生を再開する
         _animationController.forward();
         if (_videoController != null && !_videoController!.value.isPlaying) {
           _videoController!.play();
         }
-        // StoriesScreenの横スクロールを有効にする
+        /// StoriesScreenの横スクロールを有効にする
         widget.updateScrollable(true);
       }
     });
 
     if (widget.storyData.contentData.first.media == MediaType.video) {
+      // ignore: deprecated_member_use
       _videoController = VideoPlayerController.network(
         widget.storyData.contentData.first.url,
       )..initialize().then((_) {
@@ -92,7 +93,7 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
             contentData: widget.storyData.contentData[_currentIndex],
           );
         } else {
-          // 最後のページの場合は次のストーリーに遷移する
+          /// 最後のページの場合は次のストーリーに遷移する
           widget.isLastStory
               ? Navigator.pop(context)
               : widget.pagesControl.nextPage(
@@ -124,9 +125,9 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
         body: Stack(
           children: <Widget>[
             GestureDetector(
-              // 画面タップ時の処理
+              /// 画面タップ時の処理
               onTapUp: (details) {
-                // キーボードが表示されている場合はキーボードのフォーカスを外すのみ
+                /// キーボードが表示されている場合はキーボードのフォーカスを外すのみ
                 if (_focusNode.hasFocus) {
                   FocusScope.of(context).unfocus();
                 } else {
@@ -139,9 +140,9 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
                 }
               },
 
-              // 長押し時の場合にはアニメーションや動画の再生を停止する
+              /// 長押し時の場合にはアニメーションや動画の再生を停止する
               onLongPressStart: (details) {
-                // キーボードが表示されている場合は処理を行わない
+                /// キーボードが表示されている場合は処理を行わない
                 if (_focusNode.hasFocus) {
                   return;
                 }
@@ -157,9 +158,9 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
                 });
               },
 
-              // 長押し終了の場合にはアニメーションや動画の再生を再開する
+              /// 長押し終了の場合にはアニメーションや動画の再生を再開する
               onLongPressEnd: (details) {
-                // キーボードが表示されている場合は処理を行わない
+                /// キーボードが表示されている場合は処理を行わない
                 if (_focusNode.hasFocus) {
                   return;
                 }
@@ -190,7 +191,7 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
               ),
             ),
 
-            // ヘッダー部分(時間のバーとサムネ、ユーザ名)
+            /// ヘッダー部分(時間のバーとサムネ、ユーザ名)
             AnimatedOpacity(
               opacity: isLongPress ? 0.0 : 1.0,
               duration: const Duration(milliseconds: 500),
@@ -206,7 +207,7 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
     );
   }
 
-  // タップ時に前後の画像を表示するための処理
+  /// タップ時に前後の画像を表示するための処理
   void _onTapUp({
     required TapUpDetails details,
     required ContentData contentData,
@@ -217,16 +218,16 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
     final dx = details.globalPosition.dx;
     textController.clear();
 
-    // 画面の左側の1/3をタップした場合
+    /// 画面の左側の1/3をタップした場合
     if (dx < screenWidth / 3) {
-      // 1枚目以外の場合
+      /// 1枚目以外の場合
       if (_currentIndex - 1 >= 0) {
         setState(() {
           _currentIndex -= 1;
         });
         _loadStory(contentData: widget.storyData.contentData[_currentIndex]);
       } else {
-        // 初回ページの場合は処理終了する
+        /// 初回ページの場合は処理終了する
         if (widget.pagesControl.page == 0) {
           return;
         }
@@ -236,7 +237,7 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
         );
       }
     } else {
-      // 画面のその他をタップした場合
+      /// 画面のその他をタップした場合
       if (_currentIndex + 1 < widget.storyData.contentData.length) {
         setState(() {
           _currentIndex += 1;
@@ -253,7 +254,7 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
     }
   }
 
-  // 画像や動画の読み込み処理
+  /// 画像や動画の読み込み処理
   void _loadStory({
     required ContentData contentData,
     bool animateToPage = true,
@@ -263,17 +264,18 @@ class _StoryState extends State<Story> with SingleTickerProviderStateMixin {
       ..reset();
     switch (contentData.media) {
       case MediaType.image:
-        // １つ画像の表示する時間を設定
+        /// １つ画像の表示する時間を設定
         _animationController.duration = const Duration(seconds: 3);
         _animationController.forward();
       case MediaType.video:
         _videoController?.dispose();
+        // ignore: deprecated_member_use
         _videoController = VideoPlayerController.network(contentData.url)
           ..initialize().then((_) {
             setState(() {});
             if (_videoController != null &&
                 _videoController!.value.isInitialized) {
-              // ビデオの長さ分の時間を設定
+              /// ビデオの長さ分の時間を設定
               _animationController.duration = _videoController!.value.duration;
               _videoController!.play();
               _animationController.forward();

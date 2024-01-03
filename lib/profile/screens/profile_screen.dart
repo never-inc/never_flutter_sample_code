@@ -46,16 +46,16 @@ class _ProfileScreenState extends State<ProfileScreen>
       body: DefaultTabController(
         length: TabItem.values.length,
         child: ExtendedNestedScrollView(
-          // スクロール位置のすべてをまとめてスクロールするのを避ける
+          /// スクロール位置のすべてをまとめてスクロールするのを避ける
           onlyOneScrollInBody: true,
-          // タブを上で固定するためにヘッダーの合計の高さを指定
+          /// タブを上で固定するためにヘッダーの合計の高さを指定
           pinnedHeaderSliverHeightBuilder: () {
             return kToolbarHeight + MediaQuery.of(context).padding.top;
           },
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                pinned: true, // スクロールした時に上にAppBarが表示されたままになる
+                pinned: true, /// スクロールした時に上にAppBarが表示されたままになる
                 elevation: 0,
                 title: Text(
                   'プロフィール',

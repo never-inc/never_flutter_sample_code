@@ -28,7 +28,7 @@ class ChatScreenState extends State<ChatScreen> {
       return;
     }
 
-    FocusScope.of(context).unfocus(); // メッセージ送信後にキーボードを閉じる
+    FocusScope.of(context).unfocus(); /// メッセージ送信後にキーボードを閉じる
     _textController.clear();
 
     setState(() {
@@ -36,7 +36,7 @@ class ChatScreenState extends State<ChatScreen> {
       _messages.add('User: $text');
     });
 
-    // ChatGPT関数を使用して応答を取得する
+    /// ChatGPT関数を使用して応答を取得する
     try {
       final response = await chatGPT(text);
       print(response);
@@ -128,7 +128,7 @@ class ChatScreenState extends State<ChatScreen> {
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
-            FocusScope.of(context).unfocus(); // 入力フォーム以外をタップした時にキーボードを閉じる
+            FocusScope.of(context).unfocus(); /// 入力フォーム以外をタップした時にキーボードを閉じる
           },
           child: Column(
             children: <Widget>[
