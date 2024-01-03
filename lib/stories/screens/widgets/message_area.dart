@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// メッセージ入力欄のWidget
+/// メッセージ入力欄のWidget
 class MessageArea extends StatefulWidget {
   const MessageArea({
     super.key,
@@ -16,7 +16,7 @@ class MessageArea extends StatefulWidget {
 }
 
 class _MessageAreaState extends State<MessageArea> {
-  // テキストが入力されているかどうかのフラグ
+  /// テキストが入力されているかどうかのフラグ
   bool hasText = false;
 
   @override
@@ -66,7 +66,7 @@ class _MessageAreaState extends State<MessageArea> {
                               ? hasText
                                   ? TextButton(
                                       onPressed: () {
-                                        // バックエンド等にメッセージ送信する
+                                        /// バックエンド等にメッセージ送信する
                                         debugPrint(widget.textController.text);
                                       },
                                       child: Text(
@@ -111,16 +111,16 @@ class _MessageAreaState extends State<MessageArea> {
                                 Icons.favorite_border,
                                 color: Colors.white,
                               ),
-                              onPressed: () => {},
+                              onPressed: (){},
                             ),
                             IconButton(
                               icon: const Icon(
                                 Icons.send,
                                 color: Colors.white,
                               ),
-                              onPressed: () => {
-                                // バックエンド等にメッセージ送信する
-                                debugPrint(widget.textController.text),
+                              onPressed: (){
+                                /// バックエンド等にメッセージ送信する
+                                debugPrint(widget.textController.text);
                               },
                             ),
                           ],

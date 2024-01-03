@@ -34,3 +34,4 @@ flutter:
 
   assets:
     - .env
+    - assets/fixture_data/
